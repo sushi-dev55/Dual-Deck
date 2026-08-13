@@ -150,12 +150,12 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build desktop executable
-        run: pnpm tauri build --debug --no-bundle --target x86_64-pc-windows-gnu
+        run: pnpm tauri build --no-bundle --target x86_64-pc-windows-gnu
 
       - name: Verify staged native runtime
         shell: pwsh
         run: |
-          $target = Join-Path $env:LOCALAPPDATA 'DualDeck\cargo-target\x86_64-pc-windows-gnu\debug'
+          $target = Join-Path $env:LOCALAPPDATA 'DualDeck\cargo-target\x86_64-pc-windows-gnu\release'
           if (-not (Test-Path -LiteralPath (Join-Path $target 'dual-deck.exe') -PathType Leaf)) {
             throw 'Dual Deck executable was not produced'
           }
