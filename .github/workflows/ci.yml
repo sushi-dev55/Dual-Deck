@@ -1,0 +1,141 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  frontend:
+    name: Frontend
+    runs-on: windows-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Install Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Audit frontend dependencies
+        run: pnpm audit --audit-level high
+
+      - name: Check formatting
+        run: pnpm format:check
+
+      - name: Check Svelte and TypeScript
+        run: pnpm check
+
+      - name: Run frontend tests
+        run: pnpm test
+
+      - name: Build frontend
+        run: pnpm build
+
+  rust:
+    name: Rust
+    runs-on: windows-latest
+    timeout-minutes: 35
+    env:
+      CARGO_TERM_COLOR: always
+      RUST_BACKTRACE: 1
+      RUST_TARGET: x86_64-pc-windows-gnu
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Configure GNU toolchain and runtime paths
+        shell: pwsh
+        run: |
+          $mingwBin = 'C:\msys64\mingw64\bin'
+          if (-not (Test-Path -LiteralPath "$mingwBin\gcc.exe")) {
+            throw "MinGW-w64 GCC was not found at $mingwBin"
+          }
+          rustup toolchain install stable-x86_64-pc-windows-gnu --profile minimal --component rustfmt,clippy
+          rustup default stable-x86_64-pc-windows-gnu
+          $mingwBin | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          "$env:GITHUB_WORKSPACE\src-tauri\vendor\sdl3\bin" |
+            Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+      - name: Show toolchain
+        run: |
+          rustc -vV
+          cargo -V
+          gcc --version
+
+      - name: Check Rust formatting
+        run: cargo fmt --manifest-path src-tauri/Cargo.toml --all -- --check
+
+      - name: Check Rust targets
+        run: cargo check --manifest-path src-tauri/Cargo.toml --locked --all-targets --target $env:RUST_TARGET
+
+      - name: Lint Rust
+        shell: pwsh
+        run: |
+          $env:RUSTFLAGS = '-Dwarnings'
+          cargo clippy --manifest-path src-tauri/Cargo.toml --locked --all-targets --target $env:RUST_TARGET
+
+      - name: Run Rust tests
+        run: cargo test --manifest-path src-tauri/Cargo.toml --locked --all-targets --target $env:RUST_TARGET
+
+  desktop:
+    name: Desktop build
+    needs: [frontend, rust]
+    runs-on: windows-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Install Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Configure GNU toolchain
+        shell: pwsh
+        run: |
+          rustup toolchain install stable-x86_64-pc-windows-gnu --profile minimal
+          rustup default stable-x86_64-pc-windows-gnu
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build desktop executable
+        run: pnpm tauri build --debug --no-bundle --target x86_64-pc-windows-gnu
+
+      - name: Verify staged native runtime
+        shell: pwsh
+        run: |
+          $target = Join-Path $env:LOCALAPPDATA 'DualDeck\cargo-target\x86_64-pc-windows-gnu\debug'
+          if (-not (Test-Path -LiteralPath (Join-Path $target 'dual-deck.exe') -PathType Leaf)) {
+            throw 'Dual Deck executable was not produced'
+          }
+          if (-not (Test-Path -LiteralPath (Join-Path $target 'SDL3.dll') -PathType Leaf)) {
+            throw 'SDL3.dll was not staged beside the executable'
+          }

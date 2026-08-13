@@ -1,0 +1,63 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Dual Deck",
+  "version": "0.1.0",
+  "identifier": "io.github.sushi-dev55.dualdeck",
+  "build": {
+    "beforeDevCommand": "pnpm dev",
+    "devUrl": "http://localhost:1420",
+    "beforeBuildCommand": "pnpm build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "Dual Deck",
+        "width": 1280,
+        "height": 800,
+        "minWidth": 1080,
+        "minHeight": 700,
+        "center": true,
+        "decorations": true,
+        "resizable": true,
+        "fullscreen": false,
+        "visible": false
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'; frame-src 'none'; connect-src 'self' ipc: http://ipc.localhost; font-src 'self' data:; img-src 'self' asset: http://asset.localhost blob: data:; style-src 'self' 'unsafe-inline'",
+      "devCsp": "default-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'; frame-src 'none'; connect-src 'self' ipc: http://ipc.localhost http://localhost:1420 ws://localhost:1421; font-src 'self' data:; img-src 'self' asset: http://asset.localhost blob: data:; style-src 'self' 'unsafe-inline'"
+    }
+  },
+  "plugins": {
+    "updater": {
+      "endpoints": [],
+      "pubkey": ""
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["nsis"],
+    "category": "Utility",
+    "shortDescription": "Turn a DualSense controller into a desktop action deck",
+    "longDescription": "Map DualSense controls to applications, shortcuts, media controls, webhooks, workflows, and profiles.",
+    "copyright": "Copyright 2026 sushi-dev55 and Dual Deck contributors",
+    "licenseFile": "../LICENSE",
+    "resources": {
+      "vendor/sdl3/bin/SDL3.dll": "SDL3.dll",
+      "vendor/sdl3/LICENSE.txt": "licenses/SDL3.txt",
+      "../THIRD_PARTY_NOTICES.md": "licenses/THIRD_PARTY_NOTICES.md"
+    },
+    "createUpdaterArtifacts": false,
+    "windows": {
+      "nsis": {
+        "installMode": "currentUser"
+      },
+      "webviewInstallMode": {
+        "type": "downloadBootstrapper",
+        "silent": true
+      }
+    }
+  }
+}

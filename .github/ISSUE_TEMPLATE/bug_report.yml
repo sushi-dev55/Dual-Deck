@@ -1,0 +1,57 @@
+name: Bug report
+description: Report a reproducible problem in Dual Deck
+title: '[Bug]: '
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: Remove passwords, tokens, private paths, and personal data before submitting logs or screenshots.
+  - type: input
+    id: version
+    attributes:
+      label: Dual Deck version
+      placeholder: 1.0.0
+    validations:
+      required: true
+  - type: dropdown
+    id: windows
+    attributes:
+      label: Windows version
+      options:
+        - Windows 11
+        - Windows 10 64-bit
+    validations:
+      required: true
+  - type: dropdown
+    id: connection
+    attributes:
+      label: Controller connection
+      options:
+        - USB
+        - Bluetooth
+        - Controller not involved
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: Describe the problem and what you expected instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction steps
+      placeholder: |
+        1. Open...
+        2. Map...
+        3. Press...
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Add screenshots, logs, controller firmware details, or application conflicts when relevant.

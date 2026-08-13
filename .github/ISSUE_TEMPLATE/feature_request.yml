@@ -1,0 +1,38 @@
+name: Feature request
+description: Suggest a focused improvement for Dual Deck
+title: '[Feature]: '
+labels:
+  - enhancement
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What workflow is difficult or unavailable today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+      description: Describe the outcome and how it should work from a user's perspective.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Controller input
+        - Actions and workflows
+        - Profiles
+        - Interface
+        - OBS integration
+        - Installation and updates
+        - Other
+    validations:
+      required: true

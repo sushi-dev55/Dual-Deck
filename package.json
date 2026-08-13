@@ -1,0 +1,47 @@
+{
+  "name": "dual-deck",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Turn a DualSense controller into a customizable desktop action deck for Windows.",
+  "license": "MIT",
+  "author": "sushi-dev55 and Dual Deck contributors",
+  "homepage": "https://github.com/sushi-dev55/Dual-Deck#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sushi-dev55/Dual-Deck.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sushi-dev55/Dual-Deck/issues"
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "cargo": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/windows-dev.ps1 cargo",
+    "tauri": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/windows-dev.ps1 tauri"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "2.11.1",
+    "@tauri-apps/plugin-dialog": "2.7.2",
+    "@lucide/svelte": "1.28.0",
+    "svelte": "5.56.8"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "7.2.0",
+    "@tauri-apps/cli": "2.11.4",
+    "prettier": "3.9.6",
+    "prettier-plugin-svelte": "4.1.1",
+    "svelte-check": "4.7.4",
+    "typescript": "6.0.3",
+    "vite": "8.2.0",
+    "vitest": "4.1.10"
+  },
+  "packageManager": "pnpm@10.33.2"
+}

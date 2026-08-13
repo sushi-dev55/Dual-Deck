@@ -1,0 +1,102 @@
+:root {
+  font-family:
+    'Segoe UI Variable Text',
+    'Segoe UI',
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  color: #f0f2f5;
+  background: #0d0f12;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  color-scheme: dark;
+  --surface-base: #0e1013;
+  --surface-canvas: #111318;
+  --surface-panel: #14171b;
+  --surface-raised: #181b20;
+  --surface-high: #1d2127;
+  --surface-hover: #21262d;
+  --surface-overlay: #191c21;
+  --border: #252a31;
+  --border-strong: #363c46;
+  --canvas-grid: rgb(255 255 255 / 1.6%);
+  --text: #eef0f3;
+  --text-muted: #afb5be;
+  --text-subtle: #9299a3;
+  --text-disabled: #6b727c;
+  --accent: #668de8;
+  --accent-bright: #91aff8;
+  --focus: #91aff8;
+  --positive: #78c79f;
+  --warning: #e1b36d;
+  --danger: #e17f87;
+  --shadow-large: 0 18px 50px rgb(0 0 0 / 48%);
+  --motion-quick: 100ms;
+  --motion-base: 170ms;
+  --motion-slow: 260ms;
+  --ease-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-emphasized: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  width: 100%;
+  min-width: 1080px;
+  height: 100%;
+  min-height: 700px;
+  margin: 0;
+}
+
+body {
+  overflow: hidden;
+  background: var(--surface-base);
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  color: inherit;
+}
+
+button,
+select,
+label {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+::selection {
+  color: #f7f9ff;
+  background: color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
