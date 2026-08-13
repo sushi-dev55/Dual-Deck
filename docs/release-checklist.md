@@ -15,7 +15,7 @@ configured. An updater key is required only when automatic updates enter release
       the approved public identity.
 - [x] Confirm the MIT copyright holder and year in `LICENSE` and package metadata.
 - [x] Confirm the reverse-domain Tauri identifier is owned and final.
-- [ ] Enable GitHub private vulnerability reporting.
+- [x] Enable GitHub private vulnerability reporting.
 - [ ] Protect the default branch and require the CI workflow.
 
 ## Version and source
